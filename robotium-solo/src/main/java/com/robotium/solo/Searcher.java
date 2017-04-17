@@ -3,6 +3,7 @@ package com.robotium.solo;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -30,7 +31,7 @@ class Searcher {
 	Set<TextView> uniqueTextViews;
 	List<WebElement> webElements;
 	private int numberOfUniqueViews;
-	private final int TIMEOUT = 5000;
+	private final int TIMEOUT = 10000;
 
 
 	/**
@@ -203,12 +204,28 @@ class Searcher {
 
 			views = viewFetcherCallback.call();
 
-			for(T view : views){
-				if (RobotiumUtils.getNumberOfMatches(regex, view, uniqueTextViews) == expectedMinimumNumberOfMatches) {
+			Iterator iterator = views.iterator();
+
+			/**先进行简单的比对,提升效率**/
+			while (iterator.hasNext()) {
+				T textview = (T) iterator.next();
+				String text = textview.getText().toString();
+				if(text.equals(regex) || text.startsWith(regex) || text.contains(regex) || text.endsWith(regex)){
 					uniqueTextViews.clear();
-					return view;
+					return textview;
 				}
 			}
+
+			iterator = views.iterator();
+
+			while (iterator.hasNext()) {
+				T textview = (T) iterator.next();
+				if (RobotiumUtils.getNumberOfMatches(regex,textview, uniqueTextViews) == expectedMinimumNumberOfMatches) {
+					uniqueTextViews.clear();
+					return textview;
+				}
+			}
+
 			if(scroll && !scroller.scrollDown()){
 				logMatchesFound(regex);
 				return null; 

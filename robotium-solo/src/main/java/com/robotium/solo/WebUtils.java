@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import com.robotium.solo.Solo.Config;
 import android.app.Instrumentation;
+import android.util.Log;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -52,7 +53,7 @@ class WebUtils {
 	/**
 	 * Returns {@code TextView} objects based on web elements shown in the present WebViews
 	 * 
-	 * @param onlyFromVisibleWebViews true if only from visible WebViews
+	 *  onlyFromVisibleWebViews true if only from visible WebViews
 	 * @return an {@code ArrayList} of {@code TextViews}s created from the present {@code WebView}s 
 	 */
 
@@ -99,7 +100,7 @@ class WebUtils {
 	 * Returns an ArrayList of WebElements of the specified By object currently shown in the active WebView.
 	 * 
 	 * @param by the By object. Examples are By.id("id") and By.name("name")
-	 * @param onlySufficientlyVisible true if only sufficiently visible {@link WebElement} objects should be returned
+	 * @param onlySufficientlyVisbile true if only sufficiently visible {@link WebElement} objects should be returned
 	 * @return an {@code ArrayList} of the {@link WebElement} objects currently shown in the active WebView 
 	 */
 
@@ -120,7 +121,7 @@ class WebUtils {
 	 * Returns the sufficiently shown WebElements
 	 * 
 	 * @param javaScriptWasExecuted true if JavaScript was executed
-	 * @param onlySufficientlyVisible true if only sufficiently visible {@link WebElement} objects should be returned
+	 * @param onlySufficientlyVisbile true if only sufficiently visible {@link WebElement} objects should be returned
 	 * @return the sufficiently shown WebElements
 	 */
 
@@ -295,7 +296,7 @@ class WebUtils {
 	/**
 	 * Returns true if the view is sufficiently shown
 	 *
-	 * @param view the view to check
+	 * @param webElement the view to check
 	 * @return true if the view is sufficiently shown
 	 */
 
@@ -343,10 +344,12 @@ class WebUtils {
 	 */
 
 	private String getJavaScriptAsString() {
-		InputStream fis = getClass().getResourceAsStream("RobotiumWeb.js");
 		StringBuffer javaScript = new StringBuffer();
 
 		try {
+            Log.e("dkttest","start of fis:");
+			InputStream fis = inst.getContext().getResources().getAssets().open("RobotiumWeb.js");
+
 			BufferedReader input =  new BufferedReader(new InputStreamReader(fis));
 			String line = null;
 			while (( line = input.readLine()) != null){
@@ -357,6 +360,8 @@ class WebUtils {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		return javaScript.toString();
+        String str = javaScript.toString();
+        Log.e("dkttest",str);
+		return str;
 	}
 }

@@ -374,7 +374,7 @@ class ViewFetcher {
 	 * @return most recently drawn view, or null if no views were passed 
 	 */
 
-	public final <T extends View> T getFreshestView(ArrayList<T> views){       
+	public final <T extends View> T getFreshestView(ArrayList<T> views){
 		final int[] locationOnScreen = new int[2];
 		T viewToReturn = null;
 		long drawingTime = 0;
@@ -477,7 +477,7 @@ class ViewFetcher {
 
 		for(View view : views){
 
-			if(isViewType(view.getClass(), "widget.RecyclerView") || 
+			if(isViewType(view.getClass(), "widget.RecyclerView") ||
 					isViewType(view.getClass(), "widget.NestedScrollView")){
 				viewsToReturn.add(view);
 			}

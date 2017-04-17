@@ -286,6 +286,7 @@ class ScreenshotTaker {
 		if(screenShotSaverThread == null || screenShotSaver == null) {
 			screenShotSaverThread = new HandlerThread("ScreenShotSaver");
 			screenShotSaverThread.start();
+			Utils.flushStackLocalLeaks(screenShotSaverThread.getLooper());
 			screenShotSaver = new ScreenShotSaver(screenShotSaverThread);
 		}
 	}
